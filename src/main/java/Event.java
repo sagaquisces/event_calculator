@@ -66,10 +66,26 @@ public class Event {
 
     for (String coupon : theseCoupons.keySet()) {
       int discount = theseCoupons.get(coupon);
-      eventTotal += discount; //discount is negative integer
+      eventTotal += discount;
     }
 
     return eventTotal;
+  }
+
+  public boolean processCoupon(String code) {
+    Map<String,Integer> theseCoupons = getCoupons();
+    int numberOfGuests = getNumberOfGuests();
+    if (numberOfGuests >= 150 && code.equals("abcde")) {
+      theseCoupons.put("abcde", 0);
+      return true;
+    } else if (code.equals("fghij")) {
+      theseCoupons.put("fghij", -50);
+      return true;
+    } else {
+      return false;
+    }
+
+
   }
 
 }

@@ -185,41 +185,6 @@ public class EventTest {
     Map<String,Integer> theseDrinks = testEvent.getDrinks();
     Map<String,Integer> thisFood = testEvent.getFood();
     Map<String,Integer> theseEntertainments = testEvent.getEntertainment();
-
-    int expectedOutput = 0;
-
-    expectedOutput += testEvent.multiplyPP(thisFood,numberOfGuests);
-    expectedOutput += testEvent.multiplyPP(theseDrinks,numberOfGuests);
-
-    for (String entertainment : theseEntertainments.keySet()) {
-      int cost = theseEntertainments.get(entertainment);
-      expectedOutput += cost;
-    }
-
-
-    assertEquals(expectedOutput, testEvent.totalEvent());
-
-  }
-
-  @Test
-  public void totalEvent_takesFoodDrinkEntertainmentChoicesAndCouponsAddsUpGrandTotal_2400(){
-    Map<String, Integer> testFood = new HashMap();
-    Map<String, Integer> testDrinks = new HashMap();
-    Map<String, Integer> testEntertainment = new HashMap();
-    Map<String, Integer> testCoupons = new HashMap();
-
-    testFood.put("dinner", 15);
-    testDrinks.put("full bar", 20);
-    testEntertainment.put("live band", 700);
-    testEntertainment.put("balloons", 250);
-    testCoupons.put("abcde", -100);
-    testCoupons.put("fghij", -200);
-
-    Event testEvent = new Event(50, testFood, testDrinks, testEntertainment, testCoupons);
-    int numberOfGuests = testEvent.getNumberOfGuests();
-    Map<String,Integer> theseDrinks = testEvent.getDrinks();
-    Map<String,Integer> thisFood = testEvent.getFood();
-    Map<String,Integer> theseEntertainments = testEvent.getEntertainment();
     Map<String,Integer> theseCoupons = testEvent.getCoupons();
 
     int expectedOutput = 0;
@@ -233,11 +198,97 @@ public class EventTest {
     }
 
     for (String coupon : theseCoupons.keySet()) {
-      int discount = theseCoupons.get(coupon);
-      expectedOutput += discount; //discount is negative integer
+      int discount = theseEntertainments.get(coupon);
+      expectedOutput += discount;
     }
+
 
     assertEquals(expectedOutput, testEvent.totalEvent());
 
   }
+
+  @Test
+  public void processCoupon_takesCouponCodeForFreeDJAndSeesThereArentEnoughGuests_false(){
+    Map<String, Integer> testFood = new HashMap();
+    Map<String, Integer> testDrinks = new HashMap();
+    Map<String, Integer> testEntertainment = new HashMap();
+    Map<String, Integer> testCoupons = new HashMap();
+
+    testFood.put("dinner", 15);
+    testDrinks.put("full bar", 20);
+    testEntertainment.put("live band", 700);
+    testEntertainment.put("balloons", 250);
+
+    Event testEvent = new Event(50, testFood, testDrinks, testEntertainment, testCoupons);
+
+    int numberOfGuests = testEvent.getNumberOfGuests();
+
+    boolean expectedOutput;
+    Map<String,Integer> theseCoupons = testEvent.getCoupons();
+    String code = "abcde";
+
+    if (numberOfGuests >= 150 && code.equals("abcde")) {
+      theseCoupons.put("abcde", 0);
+      expectedOutput = true;
+    } else {
+      expectedOutput = false;
+    }
+    assertEquals(expectedOutput, testEvent.processCoupon("abcde"));
+  }
+
+  @Test
+  public void processCoupon_takesCouponCodeForDiscountOf50_true(){
+    Map<String, Integer> testFood = new HashMap();
+    Map<String, Integer> testDrinks = new HashMap();
+    Map<String, Integer> testEntertainment = new HashMap();
+    Map<String, Integer> testCoupons = new HashMap();
+
+    testFood.put("dinner", 15);
+    testDrinks.put("full bar", 20);
+    testEntertainment.put("live band", 700);
+    testEntertainment.put("balloons", 250);
+
+    Event testEvent = new Event(50, testFood, testDrinks, testEntertainment, testCoupons);
+
+    boolean expectedOutput;
+    Map<String,Integer> theseCoupons = testEvent.getCoupons();
+    String code = "fghij";
+
+    if (code.equals("fghij")) {
+      theseCoupons.put("fghij", 0);
+      expectedOutput = true;
+    } else {
+      expectedOutput = false;
+    }
+
+    assertEquals(true, testEvent.processCoupon("fghij"));
+  }
+
+  @Test
+  public void totalEvent_makesSureEventTotalGetsRecalculated_2650() {
+    Map<String, Integer> testFood = new HashMap();
+    Map<String, Integer> testDrinks = new HashMap();
+    Map<String, Integer> testEntertainment = new HashMap();
+    Map<String, Integer> testCoupons = new HashMap();
+
+    testFood.put("dinner", 15);
+    testDrinks.put("full bar", 20);
+    testEntertainment.put("live band", 700);
+    testEntertainment.put("balloons", 250);
+
+    Event testEvent = new Event(50, testFood, testDrinks, testEntertainment, testCoupons);
+
+    int expectedOutput = testEvent.totalEvent();
+
+    Map<String,Integer> theseCoupons = testEvent.getCoupons();
+
+    testEvent.processCoupon("fghij");
+
+    expectedOutput = testEvent.totalEvent();
+
+    assertEquals(2650, testEvent.totalEvent());
+  }
+
+
+
 }
