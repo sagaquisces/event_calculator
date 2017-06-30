@@ -35,4 +35,13 @@ public class Event {
     return mCoupons;
   }
 
+  public int multiplyPP(Map<String,Integer> ppType, Integer numberOfGuests) {
+    int result = 0;
+    for (String key : ppType.keySet()) {
+       int keyFoodTotal = numberOfGuests * ppType.get(key);
+       result += keyFoodTotal;
+    }
+    return result;
+  }
+
 }
