@@ -44,4 +44,32 @@ public class Event {
     return result;
   }
 
+  public int totalEvent() {
+
+    int numberOfGuests = getNumberOfGuests();
+    Map<String,Integer> theseDrinks = getDrinks();
+    Map<String,Integer> thisFood = getFood();
+    Map<String,Integer> theseEntertainments = getEntertainment();
+    Map<String,Integer> theseCoupons = getCoupons();
+
+    int eventTotal = 0;
+
+    int foodTotal = multiplyPP(thisFood,numberOfGuests);
+    int drinkTotal = multiplyPP(theseDrinks,numberOfGuests);
+    eventTotal += foodTotal;
+    eventTotal += drinkTotal;
+
+    for (String entertainment : theseEntertainments.keySet()) {
+      int cost = theseEntertainments.get(entertainment);
+      eventTotal += cost;
+    }
+
+    for (String coupon : theseCoupons.keySet()) {
+      int discount = theseCoupons.get(coupon);
+      eventTotal += discount; //discount is negative integer
+    }
+
+    return eventTotal;
+  }
+
 }
