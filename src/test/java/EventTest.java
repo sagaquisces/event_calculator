@@ -6,20 +6,78 @@ public class EventTest {
 
   @Test
   public void newEvent_instantiatesCorrectly() {
-    Map<String, Double> testFood = new HashMap();
-    Map<String, Double> testDrinks = new HashMap();
-    Map<String, Double> testEntertainment = new HashMap();
-    testFood.put("light snacks", new Double(5.50));
-    testDrinks.put("light drinks", new Double(6.50));
-    testEntertainment.put("live band", new Double(450.00));
+    Map<String, Integer> testFood = new HashMap();
+    Map<String, Integer> testDrinks = new HashMap();
+    Map<String, Integer> testEntertainment = new HashMap();
+    Map<String, Integer> testCoupons = new HashMap();
 
-    Event testEvent = new Event(50, testFood, testDrinks, testEntertainment);
+    Event testEvent = new Event(50, testFood, testDrinks, testEntertainment, testCoupons);
     assertEquals(true, testEvent instanceof Event);
   }
 
-  // @Test
-  // public void newEvent_getsNumberOfGuests_50() {
-  //   Event testEvent = new Event(50);
-  //   assertEquals(50, testEvent.setNumberOfGuests());
-  // }
-}
+  @Test
+  public void newEvent_getsNumberOfGuests_50() {
+    Map<String, Integer> testFood = new HashMap();
+    Map<String, Integer> testDrinks = new HashMap();
+    Map<String, Integer> testEntertainment = new HashMap();
+    Map<String, Integer> testCoupons = new HashMap();
+
+    Event testEvent = new Event(50, testFood, testDrinks, testEntertainment, testCoupons);
+    assertEquals(50, testEvent.getNumberOfGuests());
+  }
+
+  @Test
+  public void newEvent_getsFood_HashMap() {
+    Map<String, Integer> testFood = new HashMap();
+    Map<String, Integer> testDrinks = new HashMap();
+    Map<String, Integer> testEntertainment = new HashMap();
+    Map<String, Integer> testCoupons = new HashMap();
+
+    testFood.put("light snacks", 9.50);
+
+    Event testEvent = new Event(50, testFood, testDrinks, testEntertainment, testCoupons);
+    assertEquals(testFood, testEvent.getFood());
+  }
+
+  @Test
+  public void newEvent_getsDrinks_HashMap() {
+    Map<String, Integer> testFood = new HashMap();
+    Map<String, Integer> testDrinks = new HashMap();
+    Map<String, Integer> testEntertainment = new HashMap();
+    Map<String, Integer> testCoupons = new HashMap();
+
+    testDrinks.put("light drinks", 7.50);
+
+    Event testEvent = new Event(50, testFood, testDrinks, testEntertainment, testCoupons);
+    assertEquals(testDrinks, testEvent.getDrinks());
+  }
+
+  @Test
+  public void newEvent_getsEntertainment_HashMap() {
+    Map<String, Integer> testFood = new HashMap();
+    Map<String, Integer> testDrinks = new HashMap();
+    Map<String, Integer> testEntertainment = new HashMap();
+    Map<String, Integer> testCoupons = new HashMap();
+
+    testEntertainment.put("live band", 700.00);
+
+    Event testEvent = new Event(50, testFood, testDrinks, testEntertainment, testCoupons);
+    assertEquals(testEntertainment, testEvent.getEntertainment());
+  }
+
+  @Test
+  public void newEvent_getsCoupons_HashMap() {
+    Map<String, Integer> testFood = new HashMap();
+    Map<String, Integer> testDrinks = new HashMap();
+    Map<String, Integer> testEntertainment = new HashMap();
+    Map<String, Integer> testCoupons = new HashMap();
+
+    testEntertainment.put("abcde", -100.00);
+
+    Event testEvent = new Event(50, testFood, testDrinks, testEntertainment, testCoupons);
+    assertEquals(testCoupons, testEvent.getCoupons());
+  }
+
+  // food, drinks are per person, so let's test for a function to multiply per person charge by number of getNumberOfGuests
+
+  
