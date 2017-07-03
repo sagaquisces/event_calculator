@@ -74,8 +74,15 @@ public class Event {
 
   public boolean processCoupon(String code) {
     Map<String,Integer> theseCoupons = getCoupons();
+    Map<String,Integer> thisFood = getFood();
+    Map<String,Integer> theseDrinks = getDrinks();
+    Map<String,Integer> theseEntertainments = getEntertainment();
     int numberOfGuests = getNumberOfGuests();
-    if (numberOfGuests >= 150 && code.equals("abcde")) {
+    if (code.equals("abcde") && numberOfGuests >= 150 && thisFood.containsKey("dinner") && theseDrinks.containsKey("full bar")) {
+      if (theseCoupons.containsKey("dj")) {
+        theseEntertainments.remove("dj");
+      }
+      theseEntertainments.put("dj", 0);
       theseCoupons.put("abcde", 0);
       return true;
     } else if (code.equals("fghij")) {
@@ -87,5 +94,7 @@ public class Event {
 
 
   }
+
+
 
 }
